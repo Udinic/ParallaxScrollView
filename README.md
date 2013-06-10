@@ -1,97 +1,77 @@
 ParallaxScrollView
 ==================
 
-A Parallax ScrollView which takes a background and foreground view, in the ParallexScrollView.
+A Parallax ScrollView for Xamarin.Android, which is ported from [this Android project](https://github.com/chrisjenx/ParallaxScrollView) originally made by [Christopher Jenkins](http://chrisjenx.co.uk/).
 
-Demo
-----
-Please download the [demo](https://github.com/chrisjenx/ParallaxScrollView/downloads).
-Bakground image thanks to [shoptalklondon](http://shoptalklondon.com/sky-series-natural-gradients/).
+##Usage
 
+Take a look at the sample for how to use the component.
 
-Usage
------
-Look at the [demo](https://github.com/chrisjenx/ParallaxScrollView/downloads) layout for implimentation.
+Two Views, a Background and a Foreground View, are needed to have the ParallaxScrollView working. The Foreground View gets wrapped in ObservableScrollView, which itself exposes an Event telling the ScrollView was scrolled, regardless of what you put in there.
 
-The basics are, that you need two views added to the ParallaxScrollView and it will do the rest.
+###Attributes
 
+* From `Resource.Stylables`, `parallexOffset`: This number has to be between 0.1 and 1.0, it gets defaulted to 0.3 if values exceeds those boundaries.
+* An equivalent programatical Property is also present `ParallaxScrollView.ParallaxOffset`, which does the same as above.
 
-* The first `View` added is the Background
-* The second `View` added is the Foreground. 
+###Background
 
-Layout and measuring is based roughly around a FrameLayout.
+The Background View will stretch, if smaller, to the same size as of the parent. The background is moved based on the ScrollView content size and i.e. setting a `parallaxFactor` of 0.5f, will approximatly move the background at a half rate of the foreground scroll.
 
-The foreground view gets wrapped with a ObservableScrollView regardless with what you put in there, so if you want full control of layout impliment like below.
+###Foreground
 
-**Attributes**
-* `app:parallexOffset="0.3"` - this number needs to be between 0.1 and 1.0. otherwise it defaults to 0.3.
-* `ParallexScrollView.setParallexOffset(float)` - this is the programatic version of the offset value.
+Make sure it fills the parent.
 
-**Background**
-The background will at the very minimum be the exact size as the parent (matches the ParallexScrollView size).
-If the ScrollView content is larger than the parent then background calculates a factor based on the scroll capacity, i.e. a parallexFactor of 0.5 will approximatly move the background at half the rate of the foreground scroll.
+##Example layout
 
-**Foreground**
-Make sure you fill the parent, I haven't overridden this but I may in the future if people have issues with it, as the background will scroll based on the size of foreground content.
-
-Example Layout
---------------
 ```xml
-<couk.jenxsol.parallaxscrollview.views.ParallaxScrollView xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:parallexOffset="0.25" >
-
+<?xml version="1.0" encoding="utf-8"?>
+<cheesebaron.parallaxscrollview.ParallaxScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/scroll_view"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  app:parallaxOffset=".3">
+  
     <!-- Background -->
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:scaleType="fitXY"
-        android:src="@drawable/bg_sky" />
+  <ImageView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:scaleType="fitXY"
+    android:src="@drawable/bg" />
+    
+  <!-- Foreground -->
 
-    <!-- Foreground -->
-    <!-- You can place any of the items below as the foreground, but for most control, add the scroll view yourself. -->
-
-    <couk.jenxsol.parallaxscrollview.views.ObservableScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-        <LinearLayout
-            android:layout_width="260dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/spacing"
-            android:paddingTop="@dimen/spacing" >
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:padding="@dimen/spacing"
-                android:text="@string/hello_world" />
-
-        </LinearLayout>
-    </couk.jenxsol.parallaxscrollview.views.ObservableScrollView>
-
-</couk.jenxsol.parallaxscrollview.views.ParallaxScrollView>
+  <cheesebaron.parallaxscrollview.ObservableScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center">
+    
+    <!-- Just like ScrollView, we can only have one direct child here, 
+         so wrap in a Layout if you need more views inside the scroll view -->
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@android:color/white"
+      android:padding="@dimen/spacing"
+      android:text="Hello ParallaxScrollView!" />
+    
+  </cheesebaron.parallaxscrollview.ObservableScrollView>
+</cheesebaron.parallaxscrollview.ParallaxScrollView>
 ```
 
-Licence
--------
-Copyright 2012 Christopher Jenkins
+##Demo
+http://www.youtube.com/watch?v=mgygM1hZJEo
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+##License
 
-   http://www.apache.org/licenses/LICENSE-2.0
+Copyright 2013 Tomasz Cielecki
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
